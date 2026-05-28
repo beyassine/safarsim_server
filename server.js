@@ -17,6 +17,14 @@ app.use(cors({
 
 app.use(express.json())
 
+app.get('/api/test', (req, res) => {
+  res.json({
+    ok: true,
+    service: 'safarsim_server',
+    timestamp: new Date().toISOString(),
+  })
+})
+
 app.use('/api/paypal', paypalRoutes)
 
 const PORT = process.env.PORT || 3000
