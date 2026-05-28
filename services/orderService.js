@@ -19,7 +19,7 @@ const ORDERS_TABLE = process.env.ORDERS_TABLE
 
 function calculateTotalMad(cart = []) {
     return cart.reduce((sum, item) => {
-        return sum + Number(item.unitPrice) * Number(item.quantity)
+        return sum + item.unitPrice * item.quantity
     }, 0)
 }
 
@@ -34,15 +34,23 @@ function validateCart(cart = []) {
     }
 
     for (const item of cart) {
+        const quantity = Number(item.quantity)
+        const unitPrice = Number(item.unitPrice)
+
         if (
             !item.destinationName ||
             !item.dataLabel ||
             !item.days ||
-            !item.quantity ||
-            !item.unitPrice
+            !Number.isInteger(quantity) ||
+            quantity < 1 ||
+            !Number.isFinite(unitPrice) ||
+            unitPrice <= 0
         ) {
             throw new Error('Invalid cart item')
         }
+
+        item.quantity = quantity
+        item.unitPrice = unitPrice
     }
 }
 

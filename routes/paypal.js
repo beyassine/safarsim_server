@@ -156,6 +156,12 @@ router.post('/create-order', async (req, res) => {
       data: error.response?.data,
     })
 
+    if (!error.response) {
+      return res.status(400).json({
+        error: error.message,
+      })
+    }
+
     return res.status(500).json({
       error: 'Unable to create PayPal order',
       details: getPaypalErrorDetails(error),
